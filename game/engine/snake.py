@@ -34,14 +34,16 @@ class Snake:
         self.segments.appendleft(head)
         new_head = [head[0] + step[0], head[1] + step[1]]
         self.segments.appendleft(new_head)
-        self.segments.pop()
+
+        if game_field[new_head[0]][new_head[1]] == CellTypes.APPLE:
+            print("THIS IS APPLE")
+        elif game_field[new_head[0]][new_head[1]] == CellTypes.EMPTY_CELL:
+            self.segments.pop()
 
         self.n += 1
         if self.n == 10:
             self.direction = 'left'
-        elif self.n == 15:
-            self.direction = 'down'
 
         for segment in self.segments:
-            game_field[segment[0]][segment[1]
-                                   ] = CellTypes.color_to_id[self.color_name]
+            game_field[segment[0]][segment[1]] \
+                = CellTypes.color_to_id[self.color_name]

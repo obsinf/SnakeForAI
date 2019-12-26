@@ -3,11 +3,12 @@ from colors import color
 from time import sleep
 from cell_types import CellTypes
 from snake import Snake
+from random import randrange
 
 
 class PixelField(tk.Frame):
 
-    def __init__(self, width=1200, height=900, cell_size=30, title="Snakes", tick=250):
+    def __init__(self, width=1200, height=900, cell_size=30, title="Snakes", tick=500):
         super().__init__()
         self.width = width
         self.height = height
@@ -16,6 +17,13 @@ class PixelField(tk.Frame):
         self.tick = tick
         self.field = [[0] * self.field_height()
                       for _ in range(self.field_width())]
+        self.snake = Snake('purple', 39, 27)
+
+        # create apples
+
+        for _ in range(self.field_height() * self.field_width()//10):
+            self.field[randrange(0, self.field_width())][randrange(
+                0, self.field_height())] = CellTypes.APPLE
 
         self.initUI()
 
@@ -26,7 +34,6 @@ class PixelField(tk.Frame):
         self.canvas = tk.Canvas(self, width=self.width, height=self.height)
         self.canvas.pack(fill=tk.BOTH)
 
-        self.snake = Snake('yellow', 39, 27)
         # set up updates
         self.canvas.after(self.tick, self.updates)
 
@@ -37,14 +44,16 @@ class PixelField(tk.Frame):
         self.canvas.delete('all')
         for x in range(self.field_width()):
             for y in range(self.field_height()):
-                self.field[x][y] = 0
+                if self.field[x][y] != CellTypes.APPLE:
+                    self.field[x][y] = 0
 
         # do something
         self.next_tick()
+
         # update canvas
         for x in range(self.field_width()):
             for y in range(self.field_height()):
-                self.set_pixel(x, y, CellTypes.get(self.field[x][y]))
+                self.set_pixel(x, y, CellTypes.id_to_color[self.field[x][y]])
 
         self.canvas.after(self.tick, self.updates)
 

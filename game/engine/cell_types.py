@@ -30,11 +30,6 @@ class CellTypes:
         GREY: 'grey',
     }
     color_to_id = {c[1]: c[0] for c in id_to_color.items()}
-    
-    @staticmethod
-    def get(cell_id):
-
-        return CellTypes.id_to_color[cell_id]
 
 
 """
