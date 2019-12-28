@@ -2,10 +2,11 @@
 
 class AI:
 
-    def __init__(self, b=False):
+    def __init__(self, dir, b=False):
         self.b = b
+        self.dir = dir
 
-    def next_step(self, normalized_field, current_derection):
+    def next_step(self, normalized_field, current_direction):
         """if current_derection == 'left':
             return 'down'
         elif current_derection == 'down':
@@ -40,4 +41,4 @@ class AI:
                     ouf.write('\n')
 
         self.b = False
-        return input()
+        return self.dir

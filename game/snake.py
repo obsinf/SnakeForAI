@@ -5,11 +5,11 @@ from copy import deepcopy
 
 class Snake:
 
-    def __init__(self, ai, color, start_x, start_y):
+    def __init__(self, id, ai, color, start_x, start_y, start_direction='up'):
         self.color = color
         self.segments = deque()
         self.score = 0
-        self.dead = False
+        self.id = id
 
         # create snake's body (with length 4)
         self.segments.append([start_x, start_y])
@@ -21,7 +21,7 @@ class Snake:
         self.brain = ai
 
         # set default direction in start of game
-        self.direction = 'up'
+        self.direction = start_direction
 
     direct = {
         'up': (0, -1),
@@ -56,11 +56,21 @@ class Snake:
         step = self.direct[self.direction]
 
         new_head = [head[0] + step[0], head[1] + step[1]]
+        if new_head[0] == -1:
+            new_head[0] = len(game_field) - 1
+        if new_head[0] == len(game_field):
+            new_head[0] = 0
+
+        if new_head[1] == -1:
+            new_head[1] = len(game_field[0]) - 1
+        if new_head[1] == len(game_field[0]):
+            new_head[1] = 0
+
         self.segments.appendleft(new_head)
 
         if game_field[new_head[0]][new_head[1]] == 'apple':
             # print("THIS IS APPLE")
-            print(f'{self.color} got apple!')
+            print(f'{self.color}({self.id}) got apple!')
         elif game_field[new_head[0]][new_head[1]] == 'empty_cell':
             self.segments.pop()
 
